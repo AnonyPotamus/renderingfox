@@ -3,7 +3,7 @@ import json
 import numpy as np
 import lancedb
 
-db = lancedb.connect("s3://mediumarticle")
+db = lancedb.connect("s3://mediumarticles")
 table = db.open_table("medium_articles")
 
 def handler(event, context):
@@ -21,8 +21,8 @@ def handler(event, context):
             })
         }
     
-    # Shape of medium_artilces dataset is (64,20000), d=float32
-    query_vector = np.array(event['query_vector'], dtype=np.float32)
+    # Shape of medium_artilces dataset is (64,20000), d=float64
+    query_vector = np.array(event['query_vector'], dtype=np.float64)
     
     # 3 best matches	
     rs = table.search(query_vector).limit(3).to_df()
